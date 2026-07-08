@@ -4,8 +4,9 @@ Pick one character in each of two independent, paginated columns; once **both** 
 selected, the app shows three episode sections — episodes with **only #1**, episodes
 **shared** by both, and episodes with **only #2** — computed as set operations.
 
-- **Live demo:** _add after deploy_ → `https://<your-vercel-app>.vercel.app`
-- **CI:** ![CI](https://github.com/<owner>/<repo>/actions/workflows/ci.yml/badge.svg)
+- **Live demo:** **https://rick-and-morty-compare.vercel.app**
+- **Repo:** https://github.com/TixeiraValentin/rick-and-morty-compare
+- **CI:** ![CI](https://github.com/TixeiraValentin/rick-and-morty-compare/actions/workflows/ci.yml/badge.svg)
 
 Built with **Next.js 16** (App Router, Turbopack, React Compiler), **React 19.2**,
 **TypeScript (strict)**, **TanStack Query v5**, **Zod**, **nuqs**, **Tailwind CSS v4**.
