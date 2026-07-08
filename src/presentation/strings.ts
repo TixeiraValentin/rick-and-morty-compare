@@ -46,6 +46,11 @@ export const strings = {
     light: "Light",
     dark: "Dark",
   },
+  notFound: {
+    code: "404",
+    title: "This dimension doesn't exist.",
+    back: "Back to the comparison",
+  },
   errors: {
     network: "We couldn't reach the Rick & Morty API. Check your connection and try again.",
     notFound: "We couldn't find that character.",

@@ -1,26 +1,99 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens. Light values on :root; dark values via prefers-color-scheme
+ * AND [data-theme="dark"]; a [data-theme] override lets the toggle force either
+ * theme. `@theme inline` maps the tokens to Tailwind color utilities, so
+ * `bg-surface`, `text-muted`, `bg-status-alive`, `bg-primary/10`, … all work
+ * and follow the runtime theme.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --background: #f6f7f9;
+  --surface: #ffffff;
+  --foreground: #101828;
+  --muted: #5b6472;
+  --border: #e4e7ec;
+  --primary: #059669;
+  --primary-foreground: #ffffff;
+  --danger: #dc2626;
+  --status-alive: #22c55e;
+  --status-dead: #ef4444;
+  --status-unknown: #9ca3af;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --background: #0b0e13;
+    --surface: #151a21;
+    --foreground: #f2f4f7;
+    --muted: #9aa4b2;
+    --border: #28303c;
+    --primary: #34d399;
+    --primary-foreground: #04150f;
+    --danger: #f87171;
+    --status-alive: #34d399;
+    --status-dead: #f87171;
+    --status-unknown: #9aa4b2;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0b0e13;
+  --surface: #151a21;
+  --foreground: #f2f4f7;
+  --muted: #9aa4b2;
+  --border: #28303c;
+  --primary: #34d399;
+  --primary-foreground: #04150f;
+  --danger: #f87171;
+  --status-alive: #34d399;
+  --status-dead: #f87171;
+  --status-unknown: #9aa4b2;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-danger: var(--danger);
+  --color-status-alive: var(--status-alive);
+  --color-status-dead: var(--status-dead);
+  --color-status-unknown: var(--status-unknown);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Theme toggle icon: which glyph shows is decided purely in CSS from the
+   effective theme, so there is no hydration state to mismatch. */
+.theme-icon--dark {
+  display: none;
+}
+.theme-icon--light {
+  display: inline-flex;
+}
+:root[data-theme="dark"] .theme-icon--dark {
+  display: inline-flex;
+}
+:root[data-theme="dark"] .theme-icon--light {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-icon--dark {
+    display: inline-flex;
+  }
+  :root:not([data-theme="light"]) .theme-icon--light {
+    display: none;
+  }
 }
