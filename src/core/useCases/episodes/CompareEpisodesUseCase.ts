@@ -14,11 +14,6 @@ export interface EpisodeComparison {
   onlySecond: Episode[];
 }
 
-/**
- * Real orchestration (not a showcase read): fetch the UNION of both characters'
- * episodes in ONE batched request, then partition it with the pure
- * `splitEpisodeIds`. Consumed by useCompareEpisodes.
- */
 export class CompareEpisodesUseCase {
   constructor(private readonly episodes: EpisodeRepository) {}
 

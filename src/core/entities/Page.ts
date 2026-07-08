@@ -1,4 +1,3 @@
-/** A generic paginated result, decoupled from the API's `info`/`results` shape. */
 export interface PageInfo {
   count: number;
   pages: number;

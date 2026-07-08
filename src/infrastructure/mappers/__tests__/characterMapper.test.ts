@@ -13,7 +13,6 @@ const validDto = {
     "https://rickandmortyapi.com/api/episode/2",
     "https://rickandmortyapi.com/api/episode/28",
   ],
-  // Fields the API sends but the app does not consume:
   gender: "Male",
   origin: { name: "Earth (C-137)", url: "" },
 };

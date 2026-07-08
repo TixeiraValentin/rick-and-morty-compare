@@ -1,8 +1,7 @@
 import { isAppError } from "@/core/errors/AppError";
-import { strings } from "@/presentation/strings";
+import type { Dictionary } from "@/presentation/i18n/dictionaries";
 
-/** Map any thrown value to friendly copy via its typed `kind` (Golden Rule 11). */
-export function errorMessageFor(error: unknown): string {
-  if (isAppError(error)) return strings.errors[error.kind];
-  return strings.errors.unknown;
+export function errorMessageFor(error: unknown, t: Dictionary): string {
+  if (isAppError(error)) return t.errors[error.kind];
+  return t.errors.unknown;
 }

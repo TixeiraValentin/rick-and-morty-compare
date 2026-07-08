@@ -5,9 +5,10 @@ import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NuqsTestingAdapter } from "nuqs/adapters/testing";
 import { CompareBoard } from "@/presentation/components/feature/CompareBoard";
-import { strings } from "@/presentation/strings";
+import { dictionaries } from "@/presentation/i18n/dictionaries";
 
-// --- Fake Rick & Morty API, exercising the real repo -> zod -> mapper -> use case chain. ---
+const t = dictionaries.es;
+
 const avatar = (id: number) => `https://rickandmortyapi.com/api/character/avatar/${id}.jpeg`;
 const epUrl = (id: number) => `https://rickandmortyapi.com/api/episode/${id}`;
 
@@ -99,43 +100,42 @@ describe("CompareBoard", () => {
   it("hides the sections until both are selected, writes the selection to the URL, and buckets episodes", async () => {
     const { onUrlUpdate, user } = renderBoard();
 
-    const col1 = await screen.findByRole("region", { name: strings.columns.first });
-    const col2 = screen.getByRole("region", { name: strings.columns.second });
+    const column1 = await screen.findByTestId("column-1");
+    const column2 = screen.getByTestId("column-2");
 
-    // Validation gate: nothing until both are chosen.
     expect(screen.queryByTestId("compare-results")).not.toBeInTheDocument();
-    expect(screen.getByText(strings.selection.prompt)).toBeInTheDocument();
+    expect(screen.getByText(t.selection.prompt)).toBeInTheDocument();
 
-    // Pick #1 -> URL gets c1, but the sections stay hidden (only one selected).
-    await user.click(await within(col1).findByRole("button", { name: "Select Rick Sanchez" }));
+    await user.click(
+      await within(column1).findByRole("button", { name: t.card.select("Rick Sanchez") }),
+    );
     await waitFor(() => expect(lastParams(onUrlUpdate).get("c1")).toBe("1"));
     expect(screen.queryByTestId("compare-results")).not.toBeInTheDocument();
 
-    // Pick #2 -> now both are selected.
-    await user.click(await within(col2).findByRole("button", { name: "Select Morty Smith" }));
+    await user.click(
+      await within(column2).findByRole("button", { name: t.card.select("Morty Smith") }),
+    );
     await waitFor(() => expect(lastParams(onUrlUpdate).get("c2")).toBe("2"));
 
     const results = await screen.findByTestId("compare-results");
     const [onlyFirst, shared, onlySecond] = within(results).getAllByTestId("episode-section");
 
-    // Rick=[1,2,3], Morty=[2,3,4] -> only#1=[1], shared=[2,3], only#2=[4]
     expect(within(onlyFirst).getByText("Pilot")).toBeInTheDocument();
     expect(within(shared).getByText("Lawnmower Dog")).toBeInTheDocument();
     expect(within(shared).getByText("Anatomy Park")).toBeInTheDocument();
     expect(within(onlySecond).getByText("M. Night Shaym-Aliens!")).toBeInTheDocument();
-    // The "only" buckets don't leak the shared episodes.
     expect(within(onlyFirst).queryByText("Anatomy Park")).not.toBeInTheDocument();
   });
 
   it("paginates a column independently and updates the URL", async () => {
     const { onUrlUpdate, user } = renderBoard();
 
-    const col1 = await screen.findByRole("region", { name: strings.columns.first });
-    expect(await within(col1).findByText("Rick Sanchez")).toBeInTheDocument();
+    const column1 = await screen.findByTestId("column-1");
+    expect(await within(column1).findByText("Rick Sanchez")).toBeInTheDocument();
 
-    await user.click(within(col1).getByRole("button", { name: strings.columns.next }));
+    await user.click(within(column1).getByRole("button", { name: t.columns.next }));
 
     await waitFor(() => expect(lastParams(onUrlUpdate).get("p1")).toBe("2"));
-    expect(await within(col1).findByText("Summer Smith")).toBeInTheDocument();
+    expect(await within(column1).findByText("Summer Smith")).toBeInTheDocument();
   });
 });

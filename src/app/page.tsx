@@ -14,11 +14,6 @@ function toInt(value: string | string[] | undefined): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-/**
- * Server Component: prefetch the pages actually requested (deep-link safe) plus
- * any selected characters, then hand a hydrated cache to the client board.
- * The same use cases run here and in the hooks — the chain is environment-agnostic.
- */
 export default async function Home({ searchParams }: HomeProps) {
   const sp = await searchParams;
   const p1 = toInt(sp.p1) ?? 1;

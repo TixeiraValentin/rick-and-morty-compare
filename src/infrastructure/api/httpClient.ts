@@ -1,16 +1,9 @@
 import { NetworkError, NotFoundError, RateLimitError, UnknownError } from "@/core/errors/AppError";
 
-/**
- * The single HTTP entry point (Facade): one place with a timeout and typed
- * error mapping. Returns parsed JSON as `unknown` — validation is the caller's
- * job (Zod, at the api layer). No UI concerns here (Golden Rule 10).
- */
 const DEFAULT_TIMEOUT_MS = 10_000;
 
 export interface HttpGetOptions {
-  /** Server-side ISR cache window in seconds (ignored on the client). */
   revalidate?: number;
-  /** Cancellation signal (e.g. from a TanStack Query `queryFn`). */
   signal?: AbortSignal;
   timeoutMs?: number;
 }

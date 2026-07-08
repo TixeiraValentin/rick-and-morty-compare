@@ -1,67 +1,68 @@
 @import "tailwindcss";
 
-/*
- * Design tokens. Light values on :root; dark values via prefers-color-scheme
- * AND [data-theme="dark"]; a [data-theme] override lets the toggle force either
- * theme. `@theme inline` maps the tokens to Tailwind color utilities, so
- * `bg-surface`, `text-muted`, `bg-status-alive`, `bg-primary/10`, … all work
- * and follow the runtime theme.
- */
 :root {
   color-scheme: light;
-  --background: #f6f7f9;
-  --surface: #ffffff;
-  --foreground: #101828;
-  --muted: #5b6472;
-  --border: #e4e7ec;
-  --primary: #059669;
+  --background: #ece7e0;
+  --surface: #fbf9f6;
+  --surface-2: #f1ece4;
+  --foreground: #2b2a2e;
+  --muted: #6f6a64;
+  --border: #ded4c8;
+  --primary: #2f9331;
   --primary-foreground: #ffffff;
-  --danger: #dc2626;
-  --status-alive: #22c55e;
-  --status-dead: #ef4444;
-  --status-unknown: #9ca3af;
+  --accent: #3e7a8c;
+  --danger: #c0362c;
+  --status-alive: #2f9331;
+  --status-dead: #c0362c;
+  --status-unknown: #926f44;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --background: #0b0e13;
-    --surface: #151a21;
-    --foreground: #f2f4f7;
-    --muted: #9aa4b2;
-    --border: #28303c;
-    --primary: #34d399;
-    --primary-foreground: #04150f;
-    --danger: #f87171;
-    --status-alive: #34d399;
-    --status-dead: #f87171;
-    --status-unknown: #9aa4b2;
+    --background: #121410;
+    --surface: #1c1f1a;
+    --surface-2: #262a23;
+    --foreground: #e7e0db;
+    --muted: #9e988d;
+    --border: #3d373c;
+    --primary: #8bcf21;
+    --primary-foreground: #14210a;
+    --accent: #83d2e4;
+    --danger: #f2827a;
+    --status-alive: #8bcf21;
+    --status-dead: #f2827a;
+    --status-unknown: #c19978;
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --background: #0b0e13;
-  --surface: #151a21;
-  --foreground: #f2f4f7;
-  --muted: #9aa4b2;
-  --border: #28303c;
-  --primary: #34d399;
-  --primary-foreground: #04150f;
-  --danger: #f87171;
-  --status-alive: #34d399;
-  --status-dead: #f87171;
-  --status-unknown: #9aa4b2;
+  --background: #121410;
+  --surface: #1c1f1a;
+  --surface-2: #262a23;
+  --foreground: #e7e0db;
+  --muted: #9e988d;
+  --border: #3d373c;
+  --primary: #8bcf21;
+  --primary-foreground: #14210a;
+  --accent: #83d2e4;
+  --danger: #f2827a;
+  --status-alive: #8bcf21;
+  --status-dead: #f2827a;
+  --status-unknown: #c19978;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
   --color-danger: var(--danger);
   --color-status-alive: var(--status-alive);
   --color-status-dead: var(--status-dead);
@@ -75,8 +76,6 @@ body {
   color: var(--foreground);
 }
 
-/* Theme toggle icon: which glyph shows is decided purely in CSS from the
-   effective theme, so there is no hydration state to mismatch. */
 .theme-icon--dark {
   display: none;
 }

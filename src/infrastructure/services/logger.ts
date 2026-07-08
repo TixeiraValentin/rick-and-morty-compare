@@ -1,8 +1,3 @@
-/**
- * The single logging entry point (Golden Rule 12 — no raw `console.*` elsewhere).
- * A thin wrapper today; the seam lets us swap in a real sink later without
- * touching call sites.
- */
 type LogLevel = "info" | "warn" | "error";
 
 function emit(level: LogLevel, message: string, meta?: unknown): void {

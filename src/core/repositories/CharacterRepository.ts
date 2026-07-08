@@ -1,8 +1,8 @@
 import type { Character } from "@/core/entities/Character";
+import type { CharacterFilters } from "@/core/entities/CharacterFilters";
 import type { Page } from "@/core/entities/Page";
 
-/** Port: how the domain reads characters. Impl lives in infrastructure. */
 export interface CharacterRepository {
-  getCharacters(page: number): Promise<Page<Character>>;
+  getCharacters(page: number, filters?: CharacterFilters): Promise<Page<Character>>;
   getCharacterById(id: number): Promise<Character>;
 }

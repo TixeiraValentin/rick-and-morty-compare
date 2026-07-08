@@ -21,14 +21,12 @@ describe("CompareEpisodesUseCase", () => {
       second: character(2, [3, 4]),
     });
 
-    // ONE batched request for the union, in deterministic order.
     expect(getEpisodesByIds).toHaveBeenCalledTimes(1);
     expect(getEpisodesByIds).toHaveBeenCalledWith([1, 2, 3, 4]);
 
     expect(result.onlyFirst.map((e) => e.id)).toEqual([1, 2]);
     expect(result.shared.map((e) => e.id)).toEqual([3]);
     expect(result.onlySecond.map((e) => e.id)).toEqual([4]);
-    // The buckets carry full Episode entities, not just ids.
     expect(result.shared[0]).toMatchObject({ id: 3, code: "S01E3" });
   });
 

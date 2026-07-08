@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-/** A friendly, distinct-from-error empty state (Golden Rule 13). */
 export function EmptyState({
   icon,
   title,
@@ -13,7 +12,7 @@ export function EmptyState({
   return (
     <div
       role="status"
-      className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-surface/40 px-6 py-10 text-center"
+      className="flex h-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-surface/40 px-6 py-10 text-center"
     >
       {icon ? (
         <div className="text-muted" aria-hidden="true">

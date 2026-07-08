@@ -2,11 +2,6 @@
 
 import { parseAsInteger, useQueryStates } from "nuqs";
 
-/**
- * Selection + pagination live in the URL (?c1=&c2=&p1=&p2=), not React state and
- * not a global store (Golden Rule 6). Deep-linkable, refresh-safe, shareable.
- * c1/c2 are nullable (no selection); p1/p2 default to page 1.
- */
 export function useSelection() {
   const [state, setState] = useQueryStates({
     c1: parseAsInteger,

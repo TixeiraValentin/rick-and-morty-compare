@@ -1,4 +1,6 @@
 import { z } from "zod";
+import type { CharacterFilters } from "@/core/entities/CharacterFilters";
+import { NotFoundError } from "@/core/errors/AppError";
 import { httpGet } from "@/infrastructure/api/httpClient";
 import { apiEndpoints } from "@/infrastructure/config/apiEndpoints";
 import { SERVER_REVALIDATE_SECONDS } from "@/infrastructure/config/cache";
@@ -9,12 +11,24 @@ import { parseOrThrow } from "@/infrastructure/dtos/validate";
 const CharactersPageSchema = paginatedDtoSchema(CharacterDtoSchema);
 export type CharactersPageDto = z.infer<typeof CharactersPageSchema>;
 
-/** Api step of the chain: HTTP + Zod validation, returning DTOs. */
-export async function fetchCharactersPage(page: number): Promise<CharactersPageDto> {
-  const raw = await httpGet(apiEndpoints.characters(page), {
-    revalidate: SERVER_REVALIDATE_SECONDS,
-  });
-  return parseOrThrow(CharactersPageSchema, raw, `characters page ${page}`);
+const EMPTY_PAGE: CharactersPageDto = {
+  info: { count: 0, pages: 0, next: null, prev: null },
+  results: [],
+};
+
+export async function fetchCharactersPage(
+  page: number,
+  filters?: CharacterFilters,
+): Promise<CharactersPageDto> {
+  try {
+    const raw = await httpGet(apiEndpoints.characters(page, filters), {
+      revalidate: SERVER_REVALIDATE_SECONDS,
+    });
+    return parseOrThrow(CharactersPageSchema, raw, `characters page ${page}`);
+  } catch (error) {
+    if (error instanceof NotFoundError) return EMPTY_PAGE;
+    throw error;
+  }
 }
 
 export async function fetchCharacterById(id: number): Promise<CharacterDto> {

@@ -6,14 +6,6 @@ import { queryKeys } from "@/presentation/hooks/queryKeys";
 import { useCharacter } from "@/presentation/hooks/useCharacter";
 import { useSelection } from "@/presentation/hooks/useSelection";
 
-/**
- * The comparison, gated at the DATA layer (the required validation): the query
- * only runs once both characters are resolved — which only happens once both
- * are selected in the URL. Not a CSS `display:none`.
- *
- * Resolves both selected characters, then runs CompareEpisodesUseCase (one
- * batched episode request + pure partition).
- */
 export function useCompareEpisodes() {
   const { c1, c2 } = useSelection();
   const firstQuery = useCharacter(c1);
@@ -32,7 +24,6 @@ export function useCompareEpisodes() {
   });
 
   return {
-    /** Both characters selected in the URL — drives whether the sections show. */
     isEnabled: c1 !== null && c2 !== null,
     isLoading: firstQuery.isLoading || secondQuery.isLoading || comparison.isLoading,
     error: firstQuery.error ?? secondQuery.error ?? comparison.error,
