@@ -30,9 +30,7 @@ export class CompareEpisodesUseCase {
     const byId = new Map(episodes.map((episode) => [episode.id, episode]));
 
     const pick = (ids: number[]): Episode[] =>
-      ids
-        .map((id) => byId.get(id))
-        .filter((episode): episode is Episode => episode !== undefined);
+      ids.map((id) => byId.get(id)).filter((episode): episode is Episode => episode !== undefined);
 
     return {
       onlyFirst: pick(split.onlyFirst),

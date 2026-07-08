@@ -12,20 +12,36 @@ const avatar = (id: number) => `https://rickandmortyapi.com/api/character/avatar
 const epUrl = (id: number) => `https://rickandmortyapi.com/api/episode/${id}`;
 
 const rick = {
-  id: 1, name: "Rick Sanchez", status: "Alive", species: "Human",
-  image: avatar(1), episode: [epUrl(1), epUrl(2), epUrl(3)],
+  id: 1,
+  name: "Rick Sanchez",
+  status: "Alive",
+  species: "Human",
+  image: avatar(1),
+  episode: [epUrl(1), epUrl(2), epUrl(3)],
 };
 const morty = {
-  id: 2, name: "Morty Smith", status: "Alive", species: "Human",
-  image: avatar(2), episode: [epUrl(2), epUrl(3), epUrl(4)],
+  id: 2,
+  name: "Morty Smith",
+  status: "Alive",
+  species: "Human",
+  image: avatar(2),
+  episode: [epUrl(2), epUrl(3), epUrl(4)],
 };
 const summer = {
-  id: 3, name: "Summer Smith", status: "Alive", species: "Human",
-  image: avatar(3), episode: [epUrl(1)],
+  id: 3,
+  name: "Summer Smith",
+  status: "Alive",
+  species: "Human",
+  image: avatar(3),
+  episode: [epUrl(1)],
 };
 const beth = {
-  id: 4, name: "Beth Smith", status: "Alive", species: "Human",
-  image: avatar(4), episode: [epUrl(1)],
+  id: 4,
+  name: "Beth Smith",
+  status: "Alive",
+  species: "Human",
+  image: avatar(4),
+  episode: [epUrl(1)],
 };
 
 const pages: Record<number, unknown> = {

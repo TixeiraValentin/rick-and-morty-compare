@@ -20,8 +20,6 @@ export function toCharacter(dto: CharacterDto): Character {
     status: dto.status,
     species: dto.species,
     imageUrl: dto.image,
-    episodeIds: dto.episode
-      .map(parseEpisodeId)
-      .filter((id): id is number => id !== null),
+    episodeIds: dto.episode.map(parseEpisodeId).filter((id): id is number => id !== null),
   };
 }

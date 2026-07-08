@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  EpisodeDtoSchema,
-  EpisodesByIdsResponseSchema,
-} from "@/infrastructure/dtos/episodeDto";
+import { EpisodeDtoSchema, EpisodesByIdsResponseSchema } from "@/infrastructure/dtos/episodeDto";
 import { toEpisode } from "@/infrastructure/mappers/episodeMapper";
 
 const validEpisode = {
@@ -24,9 +21,7 @@ describe("EpisodeDtoSchema + toEpisode", () => {
   });
 
   it("rejects a malformed episode (missing episode code)", () => {
-    expect(
-      EpisodeDtoSchema.safeParse({ id: 1, name: "x", air_date: "y" }).success,
-    ).toBe(false);
+    expect(EpisodeDtoSchema.safeParse({ id: 1, name: "x", air_date: "y" }).success).toBe(false);
   });
 });
 
@@ -36,8 +31,6 @@ describe("EpisodesByIdsResponseSchema (batch quirk)", () => {
   });
 
   it("accepts an array (many ids requested)", () => {
-    expect(
-      EpisodesByIdsResponseSchema.safeParse([validEpisode, validEpisode]).success,
-    ).toBe(true);
+    expect(EpisodesByIdsResponseSchema.safeParse([validEpisode, validEpisode]).success).toBe(true);
   });
 });

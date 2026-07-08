@@ -1,9 +1,4 @@
-import {
-  NetworkError,
-  NotFoundError,
-  RateLimitError,
-  UnknownError,
-} from "@/core/errors/AppError";
+import { NetworkError, NotFoundError, RateLimitError, UnknownError } from "@/core/errors/AppError";
 
 /**
  * The single HTTP entry point (Facade): one place with a timeout and typed
