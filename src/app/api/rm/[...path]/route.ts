@@ -8,7 +8,12 @@ export async function GET(request: NextRequest, ctx: { params: Promise<{ path: s
   const { path } = await ctx.params;
   const segments = path.filter(Boolean);
 
-  if (!ALLOWED_RESOURCES.has(segments[0])) {
+  // Gate on the resource AND refuse dot-segments: fetch() normalizes "../" in the
+  // URL, so without this a caller could escape the resource prefix (e.g.
+  // `character/../../x`) and reach an arbitrary path on the upstream host.
+  const isAllowed =
+    ALLOWED_RESOURCES.has(segments[0]) && !segments.some((s) => s === "." || s === "..");
+  if (!isAllowed) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
