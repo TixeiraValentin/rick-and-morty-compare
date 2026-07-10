@@ -2,9 +2,17 @@ import { type NextRequest, NextResponse } from "next/server";
 import { SERVER_REVALIDATE_SECONDS } from "@/infrastructure/config/cache";
 import { env } from "@/infrastructure/config/env";
 
+const ALLOWED_RESOURCES = new Set(["character", "episode", "location"]);
+
 export async function GET(request: NextRequest, ctx: { params: Promise<{ path: string[] }> }) {
   const { path } = await ctx.params;
-  const target = `${env.apiBaseUrl}/${path.filter(Boolean).join("/")}${request.nextUrl.search}`;
+  const segments = path.filter(Boolean);
+
+  if (!ALLOWED_RESOURCES.has(segments[0])) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  const target = `${env.apiBaseUrl}/${segments.join("/")}${request.nextUrl.search}`;
 
   const upstream = await fetch(target, {
     headers: { accept: "application/json" },

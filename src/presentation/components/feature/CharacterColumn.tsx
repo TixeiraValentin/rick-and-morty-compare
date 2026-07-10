@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Users } from "lucide-react";
 import type { CharacterFilters } from "@/core/entities/CharacterFilters";
 import { CharacterCard } from "@/presentation/components/feature/CharacterCard";
@@ -9,12 +8,14 @@ import { EmptyState } from "@/presentation/components/ui/EmptyState";
 import { ErrorState } from "@/presentation/components/ui/ErrorState";
 import { Pagination } from "@/presentation/components/ui/Pagination";
 import { useCharacters } from "@/presentation/hooks/useCharacters";
+import { useColumnFilters } from "@/presentation/hooks/useColumnFilters";
 import { useTranslations } from "@/presentation/i18n/useTranslations";
 import { errorMessageFor } from "@/presentation/lib/errorMessage";
 
 interface CharacterColumnProps {
   title: string;
   testId: string;
+  column: 1 | 2;
   page: number;
   selectedId: number | null;
   disabledId: number | null;
@@ -25,6 +26,7 @@ interface CharacterColumnProps {
 export function CharacterColumn({
   title,
   testId,
+  column,
   page,
   selectedId,
   disabledId,
@@ -32,7 +34,7 @@ export function CharacterColumn({
   onPageChange,
 }: CharacterColumnProps) {
   const t = useTranslations();
-  const [filters, setFilters] = useState<CharacterFilters>({});
+  const { filters, setFilters } = useColumnFilters(column);
   const { data, isPending, isError, error, isFetching, isDebouncing, refetch } = useCharacters(
     page,
     filters,

@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Golden Rule 8: React Compiler is the single memoization strategy.
-  // Stable in Next 16; runs via babel-plugin-react-compiler behind an SWC filter.
+  // React Compiler is the single memoization strategy (no manual memo/useCallback/useMemo).
   reactCompiler: true,
   images: {
     // Avatars are immutable, so cache each optimized variant for 30 days. Once an

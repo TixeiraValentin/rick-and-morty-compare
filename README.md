@@ -46,9 +46,10 @@ usa la API pública.
   Un personaje ya elegido en una columna queda deshabilitado en la otra.
 - **Validación obligatoria**: las tres secciones **no se muestran** hasta elegir un personaje
   en cada columna — y se cumple en la **capa de datos**, no solo con CSS.
-- **Extras (plus):** estado en la **URL** (deep-link + compartible), **intercambiar / limpiar**
-  selección, **badges de conteo** por sección, **idioma ES/EN** (por defecto español), **tema
-  claro/oscuro** sin flash, y layout **dashboard** de una sola pantalla en escritorio.
+- **Extras (plus):** **selección, paginación y filtros** en la **URL** (deep-link + compartible),
+  **intercambiar / limpiar** selección, **badges de conteo** por sección, **idioma ES/EN** (por
+  defecto español), **tema claro/oscuro** sin flash, y layout **dashboard** de una sola pantalla
+  en escritorio.
 
 ---
 
@@ -138,10 +139,10 @@ de **comportamiento**, y **CI desde el primer commit**. Sin relleno de tests tri
 | Mappers + DTOs                   | Vitest              | URL→id, unión de `status`, y que **Zod rechace shapes inválidos**.                                                                                             |
 | `CompareEpisodesUseCase`         | Vitest + repo falso | Arma la request de unión correcta y devuelve los buckets bien.                                                                                                 |
 | Comportamiento de `CompareBoard` | Testing Library     | Secciones ocultas hasta elegir ambos, la selección va a la URL, buckets correctos, paginación independiente — recorre la cadena **real** vía un `fetch` falso. |
-| Smoke                            | Playwright          | Elegir dos personajes → aparecen las tres secciones (API real) — lo recomendado por Next para flujos RSC async.                                                |
+| E2E (18 tests / 7 flujos)        | Playwright          | Navegador real contra el build de producción: gating de validación, deep-link, paginación independiente, jump-to-page, filtros (nombre/estado/especie) en la URL, swap/clear, preview al hover, tema/idioma persistentes y estado de error (request interceptada). |
 
-**CI (GitHub Actions)** corre `typecheck + lint + test` en cada push/PR desde el commit #1, con el
-smoke de Playwright como job separado.
+**CI (GitHub Actions)** corre `typecheck + lint + test` en cada push/PR desde el commit #1, con la
+suite E2E de Playwright como job separado.
 
 ---
 
@@ -155,7 +156,6 @@ estados **vacío** y **error diferenciados**, e idioma/tema que respetan la pref
 
 ## Con más tiempo
 
-- Más cobertura E2E (restaurar deep-links, swap/clear, persistencia de tema/idioma).
 - Una variante GraphQL de la capa de infraestructura (mismos puertos, un adapter distinto).
 - Virtualización de listas si el catálogo creciera mucho.
 

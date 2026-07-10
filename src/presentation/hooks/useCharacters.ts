@@ -10,9 +10,19 @@ import { useDebouncedValue } from "@/presentation/hooks/useDebouncedValue";
 export function useCharacters(page: number, filters?: CharacterFilters) {
   const queryClient = useQueryClient();
   const debouncedPage = useDebouncedValue(page, 300);
+  const debouncedName = useDebouncedValue(filters?.name ?? "", 300);
+  const debouncedSpecies = useDebouncedValue(filters?.species ?? "", 300);
+
+  const effectiveFilters: CharacterFilters = {
+    name: debouncedName.trim() || undefined,
+    species: debouncedSpecies.trim() || undefined,
+    status: filters?.status,
+  };
+
   const query = useQuery({
-    queryKey: queryKeys.charactersPage(debouncedPage, filters),
-    queryFn: () => useCases.getCharacters().execute({ page: debouncedPage, filters }),
+    queryKey: queryKeys.charactersPage(debouncedPage, effectiveFilters),
+    queryFn: () =>
+      useCases.getCharacters().execute({ page: debouncedPage, filters: effectiveFilters }),
     placeholderData: keepPreviousData,
   });
 

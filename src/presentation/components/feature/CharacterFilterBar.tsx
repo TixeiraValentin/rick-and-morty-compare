@@ -1,13 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useId } from "react";
 import { Search, X } from "lucide-react";
 import type { CharacterStatus } from "@/core/entities/Character";
 import type { CharacterFilters } from "@/core/entities/CharacterFilters";
 import { useTranslations } from "@/presentation/i18n/useTranslations";
 
 const STATUSES: CharacterStatus[] = ["Alive", "Dead", "unknown"];
-const SPECIES = [
+const SPECIES_SUGGESTIONS = [
   "Human",
   "Alien",
   "Humanoid",
@@ -29,21 +29,7 @@ interface CharacterFilterBarProps {
 
 export function CharacterFilterBar({ value, onChange }: CharacterFilterBarProps) {
   const t = useTranslations();
-  const [name, setName] = useState(value.name ?? "");
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleName = (next: string) => {
-    setName(next);
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => onChange({ ...value, name: next.trim() || undefined }), 300);
-  };
-
-  const clearAll = () => {
-    if (timer.current) clearTimeout(timer.current);
-    setName("");
-    onChange({});
-  };
-
+  const speciesListId = useId();
   const hasFilters = Boolean(value.name || value.status || value.species);
 
   return (
@@ -55,8 +41,8 @@ export function CharacterFilterBar({ value, onChange }: CharacterFilterBarProps)
         />
         <input
           type="search"
-          value={name}
-          onChange={(event) => handleName(event.target.value)}
+          value={value.name ?? ""}
+          onChange={(event) => onChange({ ...value, name: event.target.value || undefined })}
           placeholder={t.filters.searchPlaceholder}
           aria-label={t.filters.searchPlaceholder}
           className={`${controlClass} w-full pl-8`}
@@ -79,24 +65,25 @@ export function CharacterFilterBar({ value, onChange }: CharacterFilterBarProps)
         ))}
       </select>
 
-      <select
+      <input
+        type="text"
+        list={speciesListId}
         value={value.species ?? ""}
         onChange={(event) => onChange({ ...value, species: event.target.value || undefined })}
+        placeholder={t.filters.speciesAll}
         aria-label={t.filters.species}
-        className={`${controlClass} cursor-pointer`}
-      >
-        <option value="">{t.filters.speciesAll}</option>
-        {SPECIES.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
+        className={`${controlClass} min-w-32 flex-1`}
+      />
+      <datalist id={speciesListId}>
+        {SPECIES_SUGGESTIONS.map((option) => (
+          <option key={option} value={option} />
         ))}
-      </select>
+      </datalist>
 
       {hasFilters ? (
         <button
           type="button"
-          onClick={clearAll}
+          onClick={() => onChange({})}
           aria-label={t.filters.clear}
           title={t.filters.clear}
           className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-md border border-border bg-surface text-muted transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"

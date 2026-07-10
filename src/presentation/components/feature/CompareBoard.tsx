@@ -27,6 +27,7 @@ export function CompareBoard() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:min-h-0 lg:flex-[1.3]">
         <CharacterColumn
           testId="column-1"
+          column={1}
           title={t.columns.first}
           page={p1}
           selectedId={c1}
@@ -36,6 +37,7 @@ export function CompareBoard() {
         />
         <CharacterColumn
           testId="column-2"
+          column={2}
           title={t.columns.second}
           page={p2}
           selectedId={c2}
