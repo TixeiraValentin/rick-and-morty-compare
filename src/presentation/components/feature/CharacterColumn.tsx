@@ -66,7 +66,23 @@ export function CharacterColumn({
         ) : isPending || isUpdating ? (
           <ColumnSkeleton />
         ) : data.items.length === 0 ? (
-          <EmptyState icon={<Users className="h-6 w-6" />} title={t.columns.empty} />
+          <EmptyState
+            icon={<Users className="h-6 w-6" />}
+            title={t.columns.empty}
+            action={
+              // An out-of-range page (e.g. a deep-linked `?p1=99999`) yields an empty
+              // page with no pagination control, so offer an explicit way back.
+              page > 1 ? (
+                <button
+                  type="button"
+                  onClick={() => onPageChange(1)}
+                  className="inline-flex cursor-pointer items-center rounded-md border border-border bg-surface px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  {t.columns.resetPage}
+                </button>
+              ) : undefined
+            }
+          />
         ) : (
           <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2" data-testid="character-list">
             {data.items.map((character, index) => (

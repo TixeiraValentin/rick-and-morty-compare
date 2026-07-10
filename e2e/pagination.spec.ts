@@ -40,4 +40,18 @@ test.describe("pagination", () => {
     await expect(column1.getByTestId("character-card").first()).toBeVisible();
     await expect(column1.getByRole("button", { name: es.previous })).toBeDisabled();
   });
+
+  test("recovers from an out-of-range page via the reset action", async ({ page }) => {
+    // A deep-linked page past the end yields an empty column with no pagination
+    // control — the reset affordance is the only way back.
+    await page.goto("/?p1=99999");
+    const column1 = page.getByTestId("column-1");
+
+    const reset = column1.getByRole("button", { name: es.resetPage });
+    await expect(reset).toBeVisible();
+
+    await reset.click();
+    await expect(page).not.toHaveURL(/p1=99999/);
+    await expect(column1.getByTestId("character-card").first()).toBeVisible();
+  });
 });

@@ -16,6 +16,7 @@ const en = {
     next: "Next page",
     empty: "No characters match these filters.",
     loading: "Loading characters…",
+    resetPage: "Back to the first page",
   },
   filters: {
     searchPlaceholder: "Search by name…",
@@ -89,6 +90,7 @@ const es: Dictionary = {
     next: "Página siguiente",
     empty: "Ningún personaje coincide con estos filtros.",
     loading: "Cargando personajes…",
+    resetPage: "Volver a la primera página",
   },
   filters: {
     searchPlaceholder: "Buscar por nombre…",

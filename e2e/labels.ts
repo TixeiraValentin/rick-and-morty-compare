@@ -7,6 +7,7 @@ export const es = {
   next: "Página siguiente",
   previous: "Página anterior",
   pageInput: "Ir a la página",
+  resetPage: "Volver a la primera página",
   search: "Buscar por nombre",
   status: "Estado",
   species: "Especie",

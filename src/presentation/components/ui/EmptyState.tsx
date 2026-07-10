@@ -4,10 +4,12 @@ export function EmptyState({
   icon,
   title,
   description,
+  action,
 }: {
   icon?: ReactNode;
   title: string;
   description?: string;
+  action?: ReactNode;
 }) {
   return (
     <div
@@ -21,6 +23,7 @@ export function EmptyState({
       ) : null}
       <p className="font-medium text-foreground">{title}</p>
       {description ? <p className="max-w-sm text-sm text-muted">{description}</p> : null}
+      {action ? <div className="mt-1">{action}</div> : null}
     </div>
   );
 }
