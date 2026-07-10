@@ -63,7 +63,7 @@ function jsonOk(body: unknown): Response {
 
 function fakeFetch(input: string | URL | Request): Promise<Response> {
   const url = input.toString();
-  const page = url.match(/\/character\/\?page=(\d+)/);
+  const page = url.match(/\/character\/?\?page=(\d+)/);
   if (page) return Promise.resolve(jsonOk(pages[Number(page[1])] ?? pages[1]));
 
   const single = url.match(/\/character\/(\d+)$/);
