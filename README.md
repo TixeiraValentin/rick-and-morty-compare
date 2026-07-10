@@ -23,14 +23,19 @@ npm install
 npm run dev        # http://localhost:3000
 ```
 
-| Script                        | Qué hace                                          |
-| ----------------------------- | ------------------------------------------------- |
-| `npm run dev`                 | Servidor de desarrollo (Turbopack)                |
-| `npm run build` / `npm start` | Build de producción / servirlo                    |
-| `npm run typecheck`           | `tsc --noEmit` (strict)                           |
-| `npm run lint`                | ESLint (incluye las reglas del React Compiler)    |
-| `npm test`                    | Vitest (unitarios + comportamiento)               |
-| `npm run test:e2e`            | Playwright (buildea, sirve y maneja un navegador) |
+| Script                        | Qué hace                                                                   |
+| ----------------------------- | -------------------------------------------------------------------------- |
+| `npm run dev`                 | Servidor de desarrollo (Turbopack) — http://localhost:3000                 |
+| `npm run build` / `npm start` | Build de producción / servirlo                                             |
+| `npm run typecheck`           | `tsc --noEmit` (strict)                                                    |
+| `npm run lint`                | ESLint (incluye las reglas del React Compiler)                             |
+| `npm test`                    | Vitest (unitarios + comportamiento), una corrida                           |
+| `npm run test:watch`          | Vitest en modo watch                                                       |
+| `npm run test:e2e`            | Playwright: buildea, sirve y maneja un navegador real (18 tests E2E)       |
+| `npm run test:e2e:ui`         | Playwright **UI Mode**: mirás cada test paso a paso (timeline + snapshots) |
+| `npm run test:e2e:report`     | Abre el último reporte HTML de Playwright                                  |
+| `npm run format`              | Prettier: formatea todo                                                    |
+| `npm run format:check`        | Prettier: verifica formato sin escribir                                    |
 
 Opcionalmente podés definir `NEXT_PUBLIC_RM_API_BASE_URL` (ver `.env.example`); por defecto
 usa la API pública.
@@ -50,6 +55,41 @@ usa la API pública.
   **intercambiar / limpiar** selección, **badges de conteo** por sección, **idioma ES/EN** (por
   defecto español), **tema claro/oscuro** sin flash, y layout **dashboard** de una sola pantalla
   en escritorio.
+
+---
+
+## Qué probar
+
+**Automatizado** (todo tiene que dar verde):
+
+```bash
+npm run typecheck && npm run lint && npm test && npm run build
+npm run test:e2e            # 18 tests E2E (buildea + navegador real)
+npm run test:e2e:ui         # los mismos, mirándolos paso a paso
+```
+
+**Manual** — levantá `npm run dev` y probá:
+
+| Qué                      | Cómo verificarlo                                                                                                          |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| Gate de validación       | Elegí un personaje en **una** columna → las 3 secciones **no** aparecen (aviso "falta uno"). Elegí en la otra → aparecen. |
+| Comparación              | Con ambos elegidos: **Solo #1**, **Compartidos**, **Solo #2**, con badge de conteo por sección.                           |
+| Deshabilitado cruzado    | Un personaje elegido en una columna queda deshabilitado en la otra.                                                       |
+| Paginación independiente | Paginá la columna 1; la 2 no se mueve. `p1` / `p2` aparecen en la URL.                                                    |
+| Jump-to-page             | Escribí un número de página + Enter; un número enorme se **clampa** a la última página.                                   |
+| Filtros en la URL        | Filtrá por nombre / estado / especie → `name1` / `status1` / `species1` en la URL. **Refrescá**: se mantienen.            |
+| Especie free-text        | El campo de especie acepta **cualquier** valor (probá `Gazorpian`) además de las sugerencias.                             |
+| Swap / limpiar           | Intercambiá columnas / limpiá la selección (aparecen al tener selección).                                                 |
+| Preview al hover         | Pasá el mouse ~0.6 s sobre una card → tarjeta de preview flotante.                                                        |
+| Tema                     | Botón sol/luna → claro/oscuro sin flash. **Refrescá**: persiste (localStorage).                                           |
+| Idioma                   | ES/EN → cambia toda la UI; queda en la URL (`lang=en`).                                                                   |
+| Estado vacío             | Filtrá por algo inexistente (`zzz`) → estado vacío diferenciado.                                                          |
+
+**Deep-links de ejemplo** (pegalos en la barra de direcciones):
+
+- `/?c1=1&c2=2` — Rick vs Morty, comparación directa.
+- `/?c1=1&c2=2&name1=rick&p2=3` — + filtro en una columna y página en la otra.
+- `/?lang=en` — arranca en inglés.
 
 ---
 
@@ -133,12 +173,12 @@ interpretación fue elegida a propósito.
 La pirámide, con honestidad: muchos tests baratos sobre la **lógica propensa a bugs**, unos pocos
 de **comportamiento**, y **CI desde el primer commit**. Sin relleno de tests triviales.
 
-| Qué                              | Herramienta         | Por qué                                                                                                                                                        |
-| -------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `splitEpisodeIds`                | Vitest              | Álgebra de conjuntos con casos borde reales (mismo personaje, vacíos, duplicados, orden). El test más valioso.                                                 |
-| Mappers + DTOs                   | Vitest              | URL→id, unión de `status`, y que **Zod rechace shapes inválidos**.                                                                                             |
-| `CompareEpisodesUseCase`         | Vitest + repo falso | Arma la request de unión correcta y devuelve los buckets bien.                                                                                                 |
-| Comportamiento de `CompareBoard` | Testing Library     | Secciones ocultas hasta elegir ambos, la selección va a la URL, buckets correctos, paginación independiente — recorre la cadena **real** vía un `fetch` falso. |
+| Qué                              | Herramienta         | Por qué                                                                                                                                                                                                                                                            |
+| -------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `splitEpisodeIds`                | Vitest              | Álgebra de conjuntos con casos borde reales (mismo personaje, vacíos, duplicados, orden). El test más valioso.                                                                                                                                                     |
+| Mappers + DTOs                   | Vitest              | URL→id, unión de `status`, y que **Zod rechace shapes inválidos**.                                                                                                                                                                                                 |
+| `CompareEpisodesUseCase`         | Vitest + repo falso | Arma la request de unión correcta y devuelve los buckets bien.                                                                                                                                                                                                     |
+| Comportamiento de `CompareBoard` | Testing Library     | Secciones ocultas hasta elegir ambos, la selección va a la URL, buckets correctos, paginación independiente — recorre la cadena **real** vía un `fetch` falso.                                                                                                     |
 | E2E (18 tests / 7 flujos)        | Playwright          | Navegador real contra el build de producción: gating de validación, deep-link, paginación independiente, jump-to-page, filtros (nombre/estado/especie) en la URL, swap/clear, preview al hover, tema/idioma persistentes y estado de error (request interceptada). |
 
 **CI (GitHub Actions)** corre `typecheck + lint + test` en cada push/PR desde el commit #1, con la
