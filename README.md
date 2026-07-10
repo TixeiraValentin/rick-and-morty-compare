@@ -142,10 +142,9 @@ particiona con `splitEpisodeIds`.
 - **Sin memoización a mano.** El **React Compiler** está encendido, así que no hay
   `memo`/`useCallback`/`useMemo` manuales — una sola estrategia, respaldada por su plugin de ESLint.
 
-> Si venís de React Native (screens + navigator), la equivalencia está explicada en detalle en
-> `GOLDEN-RULES.html` (sección "Next.js en 5 minutos"): en Next el **router es el sistema de
-> archivos** — cada `app/**/page.tsx` es una pantalla/URL. Esta app tiene una sola pantalla
-> (`app/page.tsx`) que renderiza el board del cliente.
+> En Next el **router es el sistema de archivos** — cada `app/**/page.tsx` es una pantalla/URL
+> (no hay navigator que configurar). Esta app tiene una sola pantalla (`app/page.tsx`) que
+> renderiza el board del cliente.
 
 ---
 
